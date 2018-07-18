@@ -25,5 +25,12 @@ describe GildedRose do
       gildedrose = GildedRose.new([agedbrie])
       expect { gildedrose.update_quality }.to change { gildedrose.items[0].quality }.by 1
     end
+
+    it 'Sulfuras neither reduces quality or has to be sold' do
+      sulfuras = ItemWrapper.item(name:"Sulfuras, Hand of Ragnaros", sell_in: 10, quality: 50)
+      gildedrose = GildedRose.new([sulfuras])
+      expect { gildedrose.update_quality }.to change { gildedrose.items[0].quality }.by 0
+      expect { gildedrose.update_quality }.to change { gildedrose.items[0].sell_in }.by 0
+    end
   end
 end
