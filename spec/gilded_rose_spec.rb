@@ -38,6 +38,13 @@ describe GildedRose do
         gildedrose = GildedRose.new([agedbrie])
         expect { gildedrose.update_quality }.to change { gildedrose.items[0].quality }.by 0
     end
+    
+    it 'increases the quality of backstage pass while sell_in value decreases' do
+        backstagepass = ItemWrapper.item(name:"Backstage passes to a TAFKAL80ETC concert", sell_in:15, quality: 10)
+        gildedrose = GildedRose.new([backstagepass])
+        expect{gildedrose.update_quality}.to change { gildedrose.items[0].quality}.by 1
+        expect{gildedrose.update_quality}.to change { gildedrose.items[0].sell_in}.by -1
+    end
 
   end
 end
