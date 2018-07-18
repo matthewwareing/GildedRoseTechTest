@@ -32,5 +32,12 @@ describe GildedRose do
       expect { gildedrose.update_quality }.to change { gildedrose.items[0].quality }.by 0
       expect { gildedrose.update_quality }.to change { gildedrose.items[0].sell_in }.by 0
     end
+
+    it 'prevents quality going above maximum quality' do
+        agedbrie = ItemWrapper.item(name: 'Aged Brie', sell_in: 10, quality: 50)
+        gildedrose = GildedRose.new([agedbrie])
+        expect { gildedrose.update_quality }.to change { gildedrose.items[0].quality }.by 0
+    end
+
   end
 end
