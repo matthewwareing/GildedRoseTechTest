@@ -46,5 +46,16 @@ describe GildedRose do
         expect{gildedrose.update_quality}.to change { gildedrose.items[0].sell_in}.by -1
     end
 
+    it 'increases backstage pass quality, twice as fast, when 10 days left' do
+        backstagepass = ItemWrapper.item(name:"Backstage passes to a TAFKAL80ETC concert", sell_in:10, quality: 10)
+        gildedrose = GildedRose.new([backstagepass])
+        expect{gildedrose.update_quality}.to change { gildedrose.items[0].quality }.by 2
+        end
+
+    it 'increases backstage pass quality, three times as fast, when 5 days left' do
+        backstagepass = ItemWrapper.item(name:"Backstage passes to a TAFKAL80ETC concert", sell_in:5, quality: 10)
+        gildedrose = GildedRose.new([backstagepass])
+        expect{gildedrose.update_quality}.to change { gildedrose.items[0].quality }.by 3
+    end
   end
 end
