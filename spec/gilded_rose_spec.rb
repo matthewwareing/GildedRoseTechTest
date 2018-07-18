@@ -1,5 +1,5 @@
 require 'gilded_rose.rb'
-
+# change numeric values after .by to variables
 describe GildedRose do
   describe '#update_quality' do
     it 'decreases the quality by amount to decrement' do
@@ -25,6 +25,18 @@ describe GildedRose do
       gildedrose = GildedRose.new([agedbrie])
       expect { gildedrose.update_quality }.to change { gildedrose.items[0].quality }.by 1
     end
+    
+    it 'prevents quality going above maximum quality' do
+        agedbrie = ItemWrapper.item(name: 'Aged Brie', sell_in: 10, quality: 50)
+        gildedrose = GildedRose.new([agedbrie])
+        expect { gildedrose.update_quality }.to change { gildedrose.items[0].quality }.by 0
+    end
+
+    it 'increases aged brie quality if less than maximum amount and sell_in is less than 0' do
+      agedbrie = ItemWrapper.item(name: 'Aged Brie', sell_in: -1, quality: 49)
+      gildedrose = GildedRose.new([agedbrie])
+      expect { gildedrose.update_quality }.to change { gildedrose.items[0].quality }.by 1
+    end
 
     it 'Sulfuras neither reduces quality or has to be sold' do
       sulfuras = ItemWrapper.item(name:"Sulfuras, Hand of Ragnaros", sell_in: 10, quality: 50)
@@ -33,11 +45,6 @@ describe GildedRose do
       expect { gildedrose.update_quality }.to change { gildedrose.items[0].sell_in }.by 0
     end
 
-    it 'prevents quality going above maximum quality' do
-        agedbrie = ItemWrapper.item(name: 'Aged Brie', sell_in: 10, quality: 50)
-        gildedrose = GildedRose.new([agedbrie])
-        expect { gildedrose.update_quality }.to change { gildedrose.items[0].quality }.by 0
-    end
     
     it 'increases the quality of backstage pass while sell_in value decreases' do
         backstagepass = ItemWrapper.item(name:"Backstage passes to a TAFKAL80ETC concert", sell_in:15, quality: 10)
