@@ -13,58 +13,50 @@ class GildedRose
     item.quality += amount
   end
 
+  def pastSellByDate?(item)
+    item.sell_in < 0
+  end
+  
   def update_quality(item)
-    if (item.name != 'Aged Brie') && (item.name != 'Backstage passes to a TAFKAL80ETC concert')
-      if item.quality > 0
-        decrease_quality(item, 1)
-      end
-    else
       if item.quality < MAX_ITEM_QUALITY
         increase_quality(item, 1)
         if item.name == 'Backstage passes to a TAFKAL80ETC concert'
           if item.sell_in < 11
-            increase_quality(item, 1) if item.quality < MAX_ITEM_QUALITY
+            increase_quality(item, 1)
           end
           if item.sell_in < 6
-            increase_quality(item, 1) if item.quality < MAX_ITEM_QUALITY
+            increase_quality(item, 1)
           end
         end
       end
+  end
+
+  def default_quality_change(item, quality_rate, quality_multiplier)
+    if item.sell_in <= 0
+      decrease_quality(item, quality_rate * quality_multiplier)
+    else
+      decrease_quality(item, quality_rate)
     end
   end
 
   def update_sell_in(item)
     item.sell_in -= 1
-
-    if item.sell_in < 0
+    if pastSellByDate?(item)
       if item.name != 'Aged Brie'
-        if item.name != 'Backstage passes to a TAFKAL80ETC concert'
-          if item.quality > 0
-              decrease_quality(item, 1)
-          end
-        else
           decrease_quality(item, item.quality)
-        end
       else
         increase_quality(item, 1) if item.quality < MAX_ITEM_QUALITY
       end
     end
   end
 
-  def default_updates(item)
-    if item.sell_in <= 0
-      decrease_quality(item, 2)
-    else
-      decrease_quality(item, 1)
-    end
-    item.sell_in -= 1
-  end
 
   def update_product
     @items.each do |item|
       if item.name != 'Sulfuras, Hand of Ragnaros'
         if item.name != "Aged Brie" && item.name != "Backstage passes to a TAFKAL80ETC concert"
-          default_updates(item)
+          default_quality_change(item, 1, 2)
+          item.sell_in -= 1
         else
         update_quality(item)
         update_sell_in(item)
