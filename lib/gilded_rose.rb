@@ -4,12 +4,16 @@ class GildedRose
     @items = items
   end
 
+  def reduce_quality(item, amount)
+    item.quality -= amount
+  end
+  
   def update_quality
     @items.each do |item|
       if (item.name != 'Aged Brie') && (item.name != 'Backstage passes to a TAFKAL80ETC concert')
         if item.quality > 0
           if item.name != 'Sulfuras, Hand of Ragnaros'
-            item.quality = item.quality - 1
+            reduce_quality(item, 1)
           end
         end
       else
@@ -39,7 +43,7 @@ class GildedRose
               end
             end
           else
-            item.quality = item.quality - item.quality
+            reduce_quality(item, item.quality)
           end
         else
           item.quality = item.quality + 1 if item.quality < 50
