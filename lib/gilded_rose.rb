@@ -44,26 +44,38 @@ class GildedRose
     if pastSellByDate?(item)
       if item.name != 'Aged Brie'
           decrease_quality(item, item.quality)
-      else
-        increase_quality(item, 1) if item.quality < MAX_ITEM_QUALITY
       end
     end
   end
 
+  def agedBrie_quality_change(item)
+    if item.quality < MAX_ITEM_QUALITY
+      increase_quality(item, 1)
+    end
+  end
+
+  def agedBrie_sell_in(item)
+    item.sell_in -= 1
+    
+  end
 
   def update_product
     @items.each do |item|
-      if item.name != 'Sulfuras, Hand of Ragnaros'
-        if item.name != "Aged Brie" && item.name != "Backstage passes to a TAFKAL80ETC concert"
-          default_quality_change(item, 1, 2)
-          item.sell_in -= 1
-        else
+      if item.name == 'Sulfuras, Hand of Ragnaros'
+        
+      elsif item.name == "Aged Brie" 
+        agedBrie_quality_change(item)
+        agedBrie_sell_in(item)
+      elsif item.name == "Backstage passes to a TAFKAL80ETC concert"
         update_quality(item)
         update_sell_in(item)
-        end
+      else
+        default_quality_change(item, 1, 2)
+        item.sell_in -= 1
       end
     end
   end
+
 end
 
 
