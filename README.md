@@ -1,8 +1,17 @@
 # Instructions
 
-/======================================
-Gilded Rose Requirements Specification
-/======================================
+## My Process
+
+* The second step I took to address the refactoring was to ensure there was an adequate level of testing for each possible permutation, this enabled me to be confident that any refactoring of the primary class (GildedRose) would not break the current features without informing me.
+
+* Knowing that I was unable to change the Item class, as per the specification, I wanted to address the fact that the initialization method requires fixed-order arguments. The ItemWrapper modules was created to avoid having multiple dependencies on the order of those arguments. This isolates all the knowledge of the external interface in on place, and provides an improved intrface for the application.
+
+
+## Refactoring
+
+## User Experience
+
+## Gilded Rose Requirements Specification
 
 Hi and welcome to team Gilded Rose. As you know, we are a small inn with a prime location in a
 prominent city ran by a friendly innkeeper named Allison. We also buy and sell only the finest goods.
@@ -39,13 +48,3 @@ for you).
 Just for clarification, an item can never have its Quality increase above 50, however "Sulfuras" is a
 legendary item and as such its Quality is 80 and it never alters.
 
-## My Process
-
-* The second step I took to address the refactoring was to ensure there was an adequate level of testing for each possible permutation, this enabled me to be confident that any refactoring of the primary class (GildedRose) would not break the current features without informing me.
-
-* Knowing that I was unable to change the Item class, as per the specification, I wanted to address the fact that the initialization method requires fixed-order arguments. The ItemWrapper modules was created to avoid having multiple dependencies on the order of those arguments. This isolates all the knowledge of the external interface in on place, and provides an improved intrface for the application.
-
-
-## Refactoring
-
-## User Experience
