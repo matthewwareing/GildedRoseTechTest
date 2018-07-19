@@ -2,7 +2,6 @@
 
 ## My Process
 
-<<<<<<< HEAD
 * Knowing that I was unable to change the Item class, as per the specification, I wanted to address the fact that the initialization method requires fixed-order arguments. The ItemWrapper modules was created to avoid having multiple dependencies on the order of those arguments. This isolates all the knowledge of the external interface in on place, and provides an improved intrface for the application.
 
 * The second step I took to address the refactoring was to ensure there was an adequate level of testing for each possible permutation, this enabled me to be confident that any refactoring of the primary class (GildedRose) would not break the current features without informing me.
