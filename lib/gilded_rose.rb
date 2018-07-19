@@ -1,4 +1,7 @@
 class GildedRose
+  
+  MAX_ITEM_QUALITY = 50
+  
   attr_reader :items
   def initialize(items)
     @items = items
@@ -12,30 +15,32 @@ class GildedRose
     item.quality += amount
   end
   
-  MAX_ITEM_QUALITY = 50
-  def update_quality
-    @items.each do |item|
-
-      # quality
-      if (item.name != 'Aged Brie') && (item.name != 'Backstage passes to a TAFKAL80ETC concert')
-        if item.quality > 0
-          if item.name != 'Sulfuras, Hand of Ragnaros'
-            decrease_quality(item, 1)
-          end
+  def update_quality(item)
+    if (item.name != 'Aged Brie') && (item.name != 'Backstage passes to a TAFKAL80ETC concert')
+      if item.quality > 0
+        if item.name != 'Sulfuras, Hand of Ragnaros'
+          decrease_quality(item, 1)
         end
-      else
-        if item.quality < MAX_ITEM_QUALITY
-          increase_quality(item, 1)
-          if item.name == 'Backstage passes to a TAFKAL80ETC concert'
-            if item.sell_in < 11
-              increase_quality(item, 1) if item.quality < MAX_ITEM_QUALITY
-            end
-            if item.sell_in < 6
-              increase_quality(item, 1) if item.quality < MAX_ITEM_QUALITY
-            end
+      end
+    else
+      if item.quality < MAX_ITEM_QUALITY
+        increase_quality(item, 1)
+        if item.name == 'Backstage passes to a TAFKAL80ETC concert'
+          if item.sell_in < 11
+            increase_quality(item, 1) if item.quality < MAX_ITEM_QUALITY
+          end
+          if item.sell_in < 6
+            increase_quality(item, 1) if item.quality < MAX_ITEM_QUALITY
           end
         end
       end
+    end
+  end
+  
+  def update_product
+    @items.each do |item|
+      update_quality(item)
+      # quality
       # sell_in
       if item.name != 'Sulfuras, Hand of Ragnaros'
         item.sell_in = item.sell_in - 1
