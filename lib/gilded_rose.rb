@@ -14,54 +14,43 @@ class GildedRose
   end
 
   def pastSellByDate?(item)
-    item.sell_in < 0
-  end
-  
-  def update_quality(item)
-      if item.quality < MAX_ITEM_QUALITY
-        increase_quality(item, 1)
-        if item.name == 'Backstage passes to a TAFKAL80ETC concert'
-          if item.sell_in < 11
-            increase_quality(item, 1)
-          end
-          if item.sell_in < 6
-            increase_quality(item, 1)
-          end
-        end
-      end
+    item.sell_in <= 0
   end
 
   def default_quality_change(item, quality_rate, quality_multiplier)
-    if item.sell_in <= 0
+    if pastSellByDate?(item)
       decrease_quality(item, quality_rate * quality_multiplier)
     else
       decrease_quality(item, quality_rate)
     end
   end
-
-  def update_sell_in(item)
-    item.sell_in -= 1
-    if pastSellByDate?(item)
-      if item.name != 'Aged Brie'
-          decrease_quality(item, item.quality)
-      end
-    end
-  end
-
+    
   def agedBrie(item)
     increase_quality(item, 1) if item.quality < MAX_ITEM_QUALITY
     item.sell_in -= 1
   end
 
+  def backstagePass(item)
+    increase_quality(item, 1) if item.quality < MAX_ITEM_QUALITY
+    if item.sell_in < 11
+      increase_quality(item, 1)
+    end
+    if item.sell_in < 6
+      increase_quality(item, 1)
+    end
+    item.sell_in -=1
+    decrease_quality(item, item.quality) if pastSellByDate?(item)
+  end
+
   def update_product
     @items.each do |item|
-      if item.name == 'Sulfuras, Hand of Ragnaros'
-        
-      elsif item.name == "Aged Brie" 
-        agedBrie(item)
-      elsif item.name == "Backstage passes to a TAFKAL80ETC concert"
-        update_quality(item)
-        update_sell_in(item)
+      case item.name 
+      when "Sulfuras, Hand of Ragnaros"
+        return
+      when "Aged Brie" 
+        return agedBrie(item)
+      when "Backstage passes to a TAFKAL80ETC concert"
+        return backstagePass(item)
       else
         default_quality_change(item, 1, 2)
         item.sell_in -= 1
