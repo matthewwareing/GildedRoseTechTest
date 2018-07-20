@@ -48,15 +48,9 @@ class GildedRose
     end
   end
 
-  def agedBrie_quality_change(item)
-    if item.quality < MAX_ITEM_QUALITY
-      increase_quality(item, 1)
-    end
-  end
-
-  def agedBrie_sell_in(item)
+  def agedBrie(item)
+    increase_quality(item, 1) if item.quality < MAX_ITEM_QUALITY
     item.sell_in -= 1
-    
   end
 
   def update_product
@@ -64,8 +58,7 @@ class GildedRose
       if item.name == 'Sulfuras, Hand of Ragnaros'
         
       elsif item.name == "Aged Brie" 
-        agedBrie_quality_change(item)
-        agedBrie_sell_in(item)
+        agedBrie(item)
       elsif item.name == "Backstage passes to a TAFKAL80ETC concert"
         update_quality(item)
         update_sell_in(item)
